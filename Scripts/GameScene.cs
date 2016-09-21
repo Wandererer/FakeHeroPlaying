@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameScene : MonoBehaviour {
 
-	private static GameScene instance;
+	private static GameScene instance; //싱 글 톤 선 언 
 
 	public static GameScene Instnace{
 		get { return instance; }
@@ -15,8 +15,8 @@ public class GameScene : MonoBehaviour {
 		instance = this;
 	}
 
-	public GameState gameState;
-	private 
+	public GameState gameState; //게임 상태 
+	private bool isNew=false;
 
 	// Use this for initialization
 	void Start () {
@@ -25,6 +25,36 @@ public class GameScene : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		switch(gameState)
+		{
+		case GameState.Menu:
+			MakeMenu ();
+			break;
+
+		case GameState.Shop:
+
+			break;
+
+		case GameState.Play:
+
+			break;
+
+		case GameState.Pause:
+
+			break;
+
+		case GameState.End:
+
+			break;
+
+		default:
+
+			break;
+		}
+	}
+
+	void OnGUI()
+	{
 		switch(gameState)
 		{
 		case GameState.Menu:
@@ -50,6 +80,14 @@ public class GameScene : MonoBehaviour {
 		default:
 
 			break;
+		}
+	}
+
+	void MakeMenu()
+	{
+		if (!isNew) {
+			ResourceManager.Instance.ClonePrefab ("Menu");
+			isNew = true;
 		}
 	}
 }
