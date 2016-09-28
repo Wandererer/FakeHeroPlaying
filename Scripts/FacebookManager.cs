@@ -21,18 +21,24 @@ public class FacebookManager : MonoBehaviour {
 		FB.Init (InitCallBack);
 	}
 
-	IEnumerator Start()
+	void Start()
 	{
-		WWW data = new WWW("Security");
+		/*ServerDBHandler.Instance.LogIn ("dlawkrbs@hanmail.net");*/
+	}
+
+	/*IEnumerator Start()
+	{
+		WWW data = new WWW("http://52.78.145.253/dbtest.php");
+
 		yield return data;
 		string test = data.text;
 		GameObject.Find ("EMAIL").GetComponent<UILabel> ().text = test;
 		Debug.Log (test);
 	}
-
+*/
 	public void LogIn()
 	{
-
+/*
 		if(!FB.IsLoggedIn)
 		{
 			FB.LogInWithReadPermissions (new List<string> { "public_profile","email" }, LogInCallBack);
@@ -42,7 +48,9 @@ public class FacebookManager : MonoBehaviour {
 
 		FB.LogInWithReadPermissions (new List<string> { "public_profile","email" }, LogInCallBack);
 
+*/
 
+		ServerDBHandler.Instance.LogIn ("dlawkrbs@hanmail.net");
 
 		//FB.API ("me?fields=email", HttpMethod.GET, NameCallBack);
 
@@ -67,6 +75,9 @@ public class FacebookManager : MonoBehaviour {
 		{
 			Debug.Log ("FB has Logged in");	
 			FB.API ("/me?fields=email", HttpMethod.GET, NameCallBack);
+
+		
+			//GameScene.Instnace.gameState = GameState.Play;
 		}
 		else
 		{
@@ -87,8 +98,10 @@ public class FacebookManager : MonoBehaviour {
 	{
 		Dictionary<string,object> profile = (Dictionary<string,object>)result.ResultDictionary;
 		Debug.Log (profile ["email"].ToString ());
-
-		DatabaseHandler.Instance.CheckIdIfNullInsertTable (profile ["email"].ToString ());
+		ServerDBHandler.Instance.LogIn (profile ["email"].ToString());
+		//DatabaseHandler.Instance.CheckIdIfNullInsertTable (profile ["email"].ToString ());
+	
+	
 		//GameObject.Find ("EMAIL").GetComponent<UILabel> ().text = profile ["email"].ToString ();
 
 		//name.GetComponent<UILabel> ().text = profile ["first_name"].ToString();
