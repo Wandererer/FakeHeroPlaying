@@ -51,29 +51,6 @@ public class ResourceManager : MonoBehaviour {
 		return temp;
 	}
 
-	public void DestroyGameObjectByList(string[] key)
-	{
-		for(int i=0; i<key.Length;i++)
-		{
-			GameObject obj=GameObject.Find (key [i]);
-			if(obj!=null)
-			{
-				Destroy (obj);
-			}
-		}
-	}
-
-	public void  DestroyGameObjectByName(string key)
-	{
-
-			GameObject obj=GameObject.Find (key);
-			if(obj!=null)
-			{
-				Destroy (obj);
-			}
-
-	}
-
 	public void RemoveAllPrefab()
 	{
 		//리 스 트 에 서 삭 제 만 약 리 스 트 안 개 수 0 이 면 아 무 짓 도 안 함 

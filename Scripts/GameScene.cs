@@ -16,9 +16,7 @@ public class GameScene : MonoBehaviour {
 	}
 
 	public GameState gameState; //게임 상태 
-
-	private bool isNew=false; //새로 시작
-	private bool isNewPlay=false;//플레이 시작 
+	private bool isNew=false;
 
 	// Use this for initialization
 	void Start () {
@@ -38,7 +36,7 @@ public class GameScene : MonoBehaviour {
 			break;
 
 		case GameState.Play:
-			MakePlayUIandPrefab ();
+
 			break;
 
 		case GameState.Pause:
@@ -92,21 +90,4 @@ public class GameScene : MonoBehaviour {
 			isNew = true;
 		}
 	}
-
-	void MakePlayUIandPrefab()
-	{
-		if(isNew)
-		{
-			ResourceManager.Instance.DestroyGameObjectByName ("Menu");
-			isNew = false;
-		}
-
-		if(!isNewPlay)
-		{
-			ResourceManager.Instance.ClonePrefab ("BackGroundManager");
-			isNewPlay = true;
-		}
-	}
-
-
 }
