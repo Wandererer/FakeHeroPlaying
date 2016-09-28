@@ -29,6 +29,8 @@ public class FacebookManager : MonoBehaviour {
 
 	public void LogIn()
 	{
+		
+	
 
 		if(!FB.IsLoggedIn)
 		{
