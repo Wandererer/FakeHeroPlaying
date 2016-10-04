@@ -26,13 +26,17 @@ public class ServerDBHandler : MonoBehaviour {
 		//Debug.Log (LoginPhp);
 	}
 
-	public void LogIn(string userID)
+	public IEnumerator LogIn(string userID)
 	{
 		WWWForm form = new WWWForm ();
 		form.AddField ("USERIDPOST", userID);
 
 		WWW www= new WWW(LoginPhp,form);
 
-		GameObject.Find ("EMAIL").GetComponent<UILabel> ().text = www.text;
+		//TODO : 데 이 터 받 아 올 시 로 딩 창? 같 은 
+
+		yield return www; //데 이 터 기 다 림 
+
+		//TODO : 가 져 온 이 후 로 딩 창 삭 제
 	}
 }

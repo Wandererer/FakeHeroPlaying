@@ -23,6 +23,7 @@ public class GameScene : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		gameState = GameState.Menu;
+		Game.Instance.gameData.FistSetting ();
 	}
 	
 	// Update is called once per frame
@@ -90,6 +91,7 @@ public class GameScene : MonoBehaviour {
 		if (!isNew) {
 			ResourceManager.Instance.ClonePrefab ("Menu");
 			isNew = true;
+			CheckSaveDataIsLogIn ();
 		}
 	}
 
@@ -105,6 +107,19 @@ public class GameScene : MonoBehaviour {
 		{
 			ResourceManager.Instance.ClonePrefab ("BackGroundManager");
 			isNewPlay = true;
+		}
+	}
+
+
+	void CheckSaveDataIsLogIn()
+	{
+		if(Game.Instance.gameData.SaveData.ID=="")
+		{
+			GameObject.FindGameObjectWithTag ("Login").SetActive (true);
+		}
+		else
+		{
+			GameObject.FindGameObjectWithTag ("Login").SetActive (false);
 		}
 	}
 

@@ -6,32 +6,32 @@ using System;
 using System.Xml;
 using System.Text;
 
-public class SaveData : MonoBehaviour {
-	
-	InternalSaveData m_saveData=new InternalSaveData(); //세 이 브 용 선 언 
+public class GameData  {
 
-	public void FirstSetting()
+	GameSaveData saveData=new GameSaveData();
+
+	public void FistSetting()
 	{
-		m_saveData = LoadData ();
+		saveData = LoadGameData ();
 	}
 
-	public InternalSaveData saveData
-	{
-		get { return m_saveData; }
-	}
-
-	public void SaveGameData(InternalSaveData data)
+	public void SaveGameData(GameSaveData data)
 	{
 		SaveBinaryFormat ("GameSaveData", SaveXml (data));
-		m_saveData = data;
+		saveData = data;
 	}
 
-	public InternalSaveData LoadData()
+	public GameSaveData SaveData
+	{
+		get { return saveData; }
+	}
+
+	public GameSaveData LoadGameData()
 	{
 		byte[] loadObject = (byte[])LoadBinaryFormat ("GameSaveData"); //해 당 데 이 터 가 져 옴 
 		if(loadObject==null)
 		{ //없 으 면 초 기 화 
-			InternalSaveData data = new InternalSaveData ();
+			GameSaveData data = new GameSaveData ();
 			data.ID="";
 
 			return data;
@@ -40,7 +40,7 @@ public class SaveData : MonoBehaviour {
 		return LoadXml (loadObject);
 	}
 
-	byte[] SaveXml(InternalSaveData data)
+	byte[] SaveXml(GameSaveData data)
 	{
 		//xml 저 장 용 
 		XmlDocument loadXmlDoc = new XmlDocument (); 
@@ -53,10 +53,10 @@ public class SaveData : MonoBehaviour {
 		return Encoding.Default.GetBytes (loadXmlDoc.OuterXml);
 	}
 
-	InternalSaveData LoadXml(byte[] loadData)
+	GameSaveData LoadXml(byte[] loadData)
 	{
 		//xml load용
-		InternalSaveData saveData=new InternalSaveData();
+		GameSaveData saveData=new GameSaveData();
 
 		MemoryStream m_stream = new MemoryStream (loadData);
 		XmlDocument loadXmlDoc = new XmlDocument ();
@@ -74,22 +74,12 @@ public class SaveData : MonoBehaviour {
 			{
 			case "ID":
 				saveData.ID = attr.Value;
-			break;
+				break;
 			}
 		}
 
 		return saveData;
 	}
-
-
-	public void SaveIdData(string UserId)
-	{
-		//id 정 보 저 장 
-		InternalSaveData saveData = LoadData ();
-		saveData.ID = UserId;
-		SaveGameData (saveData);
-	}
-
 
 
 	public void SaveBinaryFormat(string key, object data)
@@ -114,6 +104,14 @@ public class SaveData : MonoBehaviour {
 		BinaryFormatter b= new BinaryFormatter();
 		MemoryStream m = new MemoryStream (Convert.FromBase64String (data));
 		return b.Deserialize (m);
+	}
+
+	public void SaveIdData(string UserId)
+	{
+		//id 정 보 저 장 
+		GameSaveData saveData = LoadGameData ();
+		saveData.ID = UserId;
+		SaveGameData (saveData);
 	}
 
 }

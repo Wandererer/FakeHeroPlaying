@@ -77,16 +77,7 @@ public class FacebookManager : MonoBehaviour {
 			Debug.Log ("Error doing login: "+result.Error);
 		}
 	}
-
-	IEnumerator GetConnection()
-	{
-		WWW data = new WWW("http://52.78.145.253/dbtest.php");
-		yield return data;
-		string test = data.text;
-		GameObject.Find ("EMAIL").GetComponent<UILabel> ().text = test;
-		Debug.Log (test);
-	}
-
+		 
 	void NameCallBack(IGraphResult result)
 	{
 		Dictionary<string,object> profile = (Dictionary<string,object>)result.ResultDictionary;
