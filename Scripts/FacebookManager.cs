@@ -13,6 +13,11 @@ public class FacebookManager : MonoBehaviour {
 		set { instance=value; }
 	}
 
+	public string ID {
+		get;
+		set;
+	}
+
 
 
 	void Awake()
@@ -49,10 +54,23 @@ public class FacebookManager : MonoBehaviour {
 
 	}
 
+	public void CheckID()
+	{
+		FB.LogInWithReadPermissions (new List<string> { "public_profile","email" }, CheckIDCallBack);
+	}
+
 	void InitCallBack()
 	{		
 
 		Debug.Log ("Facebook has been init");
+	}
+
+	void CheckIDCallBack(ILoginResult result)
+	{
+		if(result.Error==null)
+		{
+			FB.API ("/me?fields=email", HttpMethod.GET, EmailCallBackForCheckID);
+		}
 	}
 
 	void LogInCallBack(ILoginResult result)
@@ -68,9 +86,6 @@ public class FacebookManager : MonoBehaviour {
 		{
 			Debug.Log ("FB has Logged in");	
 			FB.API ("/me?fields=email", HttpMethod.GET, NameCallBack);
-
-		
-			//GameScene.Instnace.gameState = GameState.Play;
 		}
 		else
 		{
@@ -82,12 +97,20 @@ public class FacebookManager : MonoBehaviour {
 	{
 		Dictionary<string,object> profile = (Dictionary<string,object>)result.ResultDictionary;
 		Debug.Log (profile ["email"].ToString ());
-		ServerDBHandler.Instance.LogIn (profile ["email"].ToString());
+		//ServerDBHandler.Instance.LogIn (profile ["email"].ToString());
+
+		StartCoroutine (ServerDBHandler.Instance.LogIn (profile ["email"].ToString ()));
 		//DatabaseHandler.Instance.CheckIdIfNullInsertTable (profile ["email"].ToString ());
 	
 	
 		//GameObject.Find ("EMAIL").GetComponent<UILabel> ().text = profile ["email"].ToString ();
 
 		//name.GetComponent<UILabel> ().text = profile ["first_name"].ToString();
+	}
+
+	void EmailCallBackForCheckID(IGraphResult result)
+	{
+		Dictionary<string,object> profile = (Dictionary<string,object>)result.ResultDictionary;
+		this.ID = profile ["email"].ToString ();
 	}
 }

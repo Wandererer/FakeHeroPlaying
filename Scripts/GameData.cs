@@ -10,9 +10,10 @@ public class GameData  {
 
 	GameSaveData saveData=new GameSaveData();
 
-	public void FistSetting()
+	public void FirstSetting()
 	{
 		saveData = LoadGameData ();
+		//ResetGameData();
 	}
 
 	public void SaveGameData(GameSaveData data)
@@ -24,6 +25,12 @@ public class GameData  {
 	public GameSaveData SaveData
 	{
 		get { return saveData; }
+	}
+
+	private void ResetGameData()
+	{
+		PlayerPrefs.DeleteAll();
+		FirstSetting ();
 	}
 
 	public GameSaveData LoadGameData()

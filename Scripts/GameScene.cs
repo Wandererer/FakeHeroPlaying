@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class GameScene : MonoBehaviour {
 
@@ -23,7 +24,7 @@ public class GameScene : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		gameState = GameState.Menu;
-		Game.Instance.gameData.FistSetting ();
+		Game.Instance.gameData.FirstSetting ();
 	}
 	
 	// Update is called once per frame
@@ -39,6 +40,7 @@ public class GameScene : MonoBehaviour {
 			break;
 
 		case GameState.Play:
+			Debug.Log ("play");
 			MakePlayUIandPrefab ();
 			break;
 
@@ -88,11 +90,12 @@ public class GameScene : MonoBehaviour {
 
 	void MakeMenu()
 	{
+		Game.Instance.gameData.FirstSetting ();
 		if (!isNew) {
 			ResourceManager.Instance.ClonePrefab ("Menu");
 			isNew = true;
-			CheckSaveDataIsLogIn ();
 		}
+		CheckSaveDataIsLogIn ();
 	}
 
 	void MakePlayUIandPrefab()
@@ -115,11 +118,26 @@ public class GameScene : MonoBehaviour {
 	{
 		if(Game.Instance.gameData.SaveData.ID=="")
 		{
+			try{
 			GameObject.FindGameObjectWithTag ("Login").SetActive (true);
+			GameObject.FindGameObjectWithTag ("Start").SetActive (false);
+			}
+			catch(Exception e)
+			{
+				
+			}
+
 		}
 		else
 		{
+			try{
 			GameObject.FindGameObjectWithTag ("Login").SetActive (false);
+			GameObject.FindGameObjectWithTag ("Start").SetActive (true);
+			}
+			catch(Exception e)
+			{
+
+			}
 		}
 	}
 

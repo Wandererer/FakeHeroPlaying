@@ -37,6 +37,32 @@ public class ServerDBHandler : MonoBehaviour {
 
 		yield return www; //데 이 터 기 다 림 
 
+		Debug.Log (www.text);
+		IsLogInSuccess (www.text,userID);
 		//TODO : 가 져 온 이 후 로 딩 창 삭 제
 	}
+
+	private void IsLogInSuccess(string text,string userID)
+	{
+		switch(text)
+		{
+		case "ALREADY":
+			Game.Instance.gameData.SaveIdData (userID);
+			break;
+
+		case "SUCCESS":
+			Game.Instance.gameData.SaveIdData (userID);
+			break;
+
+		case "FAIL":
+			StartCoroutine (LogIn (userID)); //WARNING :무 한 루 프 빠 질 가 능 성 있 음 ...... 일 정 이 상 하 면 아 예 안 되 게 바 꿔 야 
+			break;
+
+		default:
+
+			break;
+		}
+	}
+
+
 }
