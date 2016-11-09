@@ -6,6 +6,11 @@ public class GameScene : MonoBehaviour {
 
 	private static GameScene instance; //싱 글 톤 선 언 
 
+	private Vector3 startPos, loginPos;
+	private Vector3 startNewPos,loginNewPos;
+
+	private GameObject loginButton, startButton;
+
 	public static GameScene Instnace{
 		get { return instance; }
 		set { instance = value; }
@@ -40,7 +45,7 @@ public class GameScene : MonoBehaviour {
 			break;
 
 		case GameState.Play:
-			Debug.Log ("play");
+			//Debug.Log ("play");
 			MakePlayUIandPrefab ();
 			break;
 
@@ -90,18 +95,32 @@ public class GameScene : MonoBehaviour {
 
 	void MakeMenu()
 	{
-		Game.Instance.gameData.FirstSetting ();
+		Game.Instance.gameData.FirstSetting ();//저 장 데 이 터 가 저 옴 
 		if (!isNew) {
+			//새 로 시 작 이 아 닐  
 			ResourceManager.Instance.ClonePrefab ("Menu");
 			isNew = true;
+			SetButtonOriginalPoseandSetButtonObject ();
 		}
 		CheckSaveDataIsLogIn ();
 	}
 
+	void SetButtonOriginalPoseandSetButtonObject()
+	{
+		loginButton = GameObject.Find ("FacebookLogin");
+		loginPos = loginButton.GetComponent<Transform> ().localPosition;
+		loginNewPos = new Vector3 (2500f, loginPos.y, 0);
+
+		startButton=GameObject.Find ("GameStart");
+		startPos = startButton.GetComponent<Transform> ().localPosition;
+		startNewPos = new Vector3 (2500f, startPos.y, 0);
+	}
+
 	void MakePlayUIandPrefab()
 	{
+		//게 임 이 시 작 될 경 우 메 뉴 삭 제 하 고 플 레 이 용 생 
 		if(isNew)
-		{
+		{//게 임 시 작 일 경 우 
 			ResourceManager.Instance.DestroyGameObjectByName ("Menu");
 			isNew = false;
 		}
@@ -116,30 +135,32 @@ public class GameScene : MonoBehaviour {
 
 	void CheckSaveDataIsLogIn()
 	{
+		//SetActive를 꺼 놓은 오 브 젝 트 들 은 에 러 가 발 생 함 
 		if(Game.Instance.gameData.SaveData.ID=="")
 		{
-			try{
-			GameObject.FindGameObjectWithTag ("Login").SetActive (true);
-			GameObject.FindGameObjectWithTag ("Start").SetActive (false);
-			}
-			catch(Exception e)
-			{
-				
-			}
+			ButtonAppearOrDissapearForLoginButton (loginPos);
+			ButtonAppearOrDissapearForStartButton (startNewPos);
+
 
 		}
 		else
 		{
-			try{
-			GameObject.FindGameObjectWithTag ("Login").SetActive (false);
-			GameObject.FindGameObjectWithTag ("Start").SetActive (true);
-			}
-			catch(Exception e)
-			{
-
-			}
+			ButtonAppearOrDissapearForLoginButton (loginNewPos);
+			ButtonAppearOrDissapearForStartButton (startPos);
 		}
 	}
+
+	private void ButtonAppearOrDissapearForLoginButton(Vector3 newPos)
+	{
+		loginButton.GetComponent<Transform> ().localPosition = newPos;
+	}
+
+	private void ButtonAppearOrDissapearForStartButton(Vector3 newPos)
+	{
+		startButton.GetComponent<Transform> ().localPosition = newPos;
+	}
+
+
 
 
 }

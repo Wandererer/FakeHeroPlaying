@@ -31,6 +31,8 @@ public class ServerDBHandler : MonoBehaviour {
 		WWWForm form = new WWWForm ();
 		form.AddField ("USERIDPOST", userID);
 
+		Debug.Log (userID);
+
 		WWW www= new WWW(LoginPhp,form);
 
 		//TODO : 데 이 터 받 아 올 시 로 딩 창? 같 은 

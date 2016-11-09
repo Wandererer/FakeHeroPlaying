@@ -34,20 +34,12 @@ public class FacebookManager : MonoBehaviour {
 
 	public void LogIn()
 	{
-		
-	
-
+		//facebook 로 그 인 
 		if(!FB.IsLoggedIn)
 		{
 			FB.LogInWithReadPermissions (new List<string> { "public_profile","email" }, LogInCallBack);
 		}
-
-
-
 		FB.LogInWithReadPermissions (new List<string> { "public_profile","email" }, LogInCallBack);
-
-
-
 		//ServerDBHandler.Instance.LogIn ("dlawkrbs@hanmail.net");
 
 		//FB.API ("me?fields=email", HttpMethod.GET, NameCallBack);
@@ -75,15 +67,15 @@ public class FacebookManager : MonoBehaviour {
 
 	void LogInCallBack(ILoginResult result)
 	{
-
-		var perms = new List<string>(){"public_profile", "email"};
-		var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
+		//로 그 인 결 과 에 따 라 실 행 
+		var perms = new List<string>(){"public_profile", "email"}; //허 가 리 스 트 가 져 옴 
+		var aToken = Facebook.Unity.AccessToken.CurrentAccessToken; //토 큰 확 인 
 		foreach (string perm in aToken.Permissions) {
-			Debug.Log(perm);
+			Debug.Log(perm);//접 근 가 능 상 태 면 출 력 해 줌 
 		}
 		//GetConnection ();
 		if(result.Error==null)
-		{
+		{//에 러 가 아 니 면 
 			Debug.Log ("FB has Logged in");	
 			FB.API ("/me?fields=email", HttpMethod.GET, NameCallBack);
 		}
@@ -95,8 +87,9 @@ public class FacebookManager : MonoBehaviour {
 		 
 	void NameCallBack(IGraphResult result)
 	{
+		//이 메 일 받 아 온 결 과 
 		Dictionary<string,object> profile = (Dictionary<string,object>)result.ResultDictionary;
-		Debug.Log (profile ["email"].ToString ());
+		//Debug.Log (profile ["email"].ToString ());
 		//ServerDBHandler.Instance.LogIn (profile ["email"].ToString());
 
 		StartCoroutine (ServerDBHandler.Instance.LogIn (profile ["email"].ToString ()));
@@ -111,6 +104,6 @@ public class FacebookManager : MonoBehaviour {
 	void EmailCallBackForCheckID(IGraphResult result)
 	{
 		Dictionary<string,object> profile = (Dictionary<string,object>)result.ResultDictionary;
-		this.ID = profile ["email"].ToString ();
+		this.ID = profile ["email"].ToString ();//
 	}
 }
